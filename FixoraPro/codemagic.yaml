@@ -4,13 +4,13 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m2
     integrations:
-      app_store_connect: flat_master
+      app_store_connect: fixora_pro
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.fixxpro.FixoraPro
       vars:
-        APP_STORE_CONNECT_KEY: flat_master
+        APP_STORE_CONNECT_KEY: fixora_pro
         APP_STORE_APPLE_ID: 6763554843
         BUNDLE_ID: "com.fixxpro.FixoraPro"
         XCODE_PROJECT: "FixoraPro.xcodeproj"
