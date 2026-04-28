@@ -340,3 +340,161 @@ class ProjectsViewModel: ObservableObject {
         saveHistory()
     }
 }
+
+@MainActor
+final class FixoraProViewModel: ObservableObject {
+    
+    @Published var navigateToMain = false {
+        didSet {
+            if navigateToMain {
+                deadlineTask?.cancel()
+                uiLocked = true
+            }
+        }
+    }
+    
+    @Published var navigateToWeb = false {
+        didSet {
+            if navigateToWeb {
+                deadlineTask?.cancel()
+                uiLocked = true
+            }
+        }
+    }
+    
+    @Published var showPermissionPrompt = false
+    @Published var showOfflineView = false
+    
+    private let modules: ModuleContainer
+    private let state: StateReference
+    private let saga: AcquisitionSaga
+    private let coordinator: FixoraCoordinator
+    
+    private var deadlineTask: Task<Void, Never>?
+    
+    private var uiLocked: Bool = false
+    
+    init() {
+        let container = DefaultModuleContainer()
+        let state = StateReference()
+        
+        self.modules = container
+        self.state = state
+        self.saga = AcquisitionSaga(modules: container, state: state)
+        self.coordinator = FixoraCoordinator()
+        
+        wireUpCoordinator()
+    }
+    
+    private func wireUpCoordinator() {
+        coordinator.onRouteToMain = { [weak self] in
+            self?.applyRouteToMain()
+        }
+        coordinator.onRouteToWeb = { [weak self] _ in
+            self?.applyRouteToWeb()
+        }
+        coordinator.onRouteToApproval = { [weak self] in
+            self?.applyRouteToApproval()
+        }
+        coordinator.onRouteToOffline = { [weak self] in
+            self?.showOfflineView = true
+        }
+        coordinator.onRouteToOnline = { [weak self] in
+            self?.showOfflineView = false
+        }
+    }
+    
+    func boot() {
+        Task {
+            let bundle = modules.crate.unpackBundle()
+            
+            state.acquisition.dimensions = bundle.dimensions
+            state.acquisition.trails = bundle.trails
+            state.delivery.spot = bundle.spot
+            state.delivery.label = bundle.label
+            state.delivery.initial = bundle.initial
+            state.approval.allowed = bundle.allowed
+            state.approval.blocked = bundle.blocked
+            state.approval.prompted = bundle.prompted
+            
+            armDeadline()
+        }
+    }
+    
+    func ingestAcquisition(_ data: [String: Any]) {
+        Task {
+            let mapped = data.mapValues { "\($0)" }
+            state.acquisition.dimensions = mapped
+            modules.crate.writeAcquisition(mapped)
+            
+            let route = await saga.execute()
+            if let route = route {
+                coordinator.apply(route)
+            }
+        }
+    }
+    
+    func ingestDeeplinks(_ data: [String: Any]) {
+        Task {
+            let mapped = data.mapValues { "\($0)" }
+            state.acquisition.trails = mapped
+            modules.crate.writeDeeplinks(mapped)
+        }
+    }
+    
+    func acceptApproval() {
+        Task {
+            let route = await saga.executeApprovalAccept()
+            showPermissionPrompt = false
+            coordinator.apply(route)
+        }
+    }
+    
+    func declineApproval() {
+        let route = saga.executeApprovalDecline()
+        showPermissionPrompt = false
+        coordinator.apply(route)
+    }
+    
+    func networkConnectivityChanged(_ connected: Bool) {
+        coordinator.networkChanged(connected: connected)
+    }
+    
+    private func applyRouteToMain() {
+        guard !uiLocked else {
+            return
+        }
+        navigateToMain = true
+    }
+    
+    private func applyRouteToWeb() {
+        guard !uiLocked else {
+            return
+        }
+        navigateToWeb = true
+    }
+    
+    private func applyRouteToApproval() {
+        guard !uiLocked else {
+            return
+        }
+        showPermissionPrompt = true
+    }
+    
+    private func armDeadline() {
+        deadlineTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 30_000_000_000)
+            
+            guard let self = self else { return }
+            
+            let shouldFire = self.saga.reportTimeoutOccurred()
+            if shouldFire {
+                self.coordinator.apply(.openMain)
+            }
+        }
+    }
+    
+    deinit {
+        deadlineTask?.cancel()
+    }
+}

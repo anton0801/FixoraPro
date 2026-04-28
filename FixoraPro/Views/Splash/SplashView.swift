@@ -1,99 +1,159 @@
 import SwiftUI
+import Combine
+import Network
 
 struct SplashView: View {
-    var onComplete: () -> Void
-
+    
     @State private var logoScale: CGFloat = 0.3
     @State private var logoOpacity: Double = 0
     @State private var lineProgress: CGFloat = 0
     @State private var taglineOpacity: Double = 0
     @State private var pulseScale: CGFloat = 1.0
+    @StateObject private var viewModel = FixoraProViewModel()
+    @State private var networkMonitor = NWPathMonitor()
+    @State private var cancellables = Set<AnyCancellable>()
     @State private var glowOpacity: Double = 0
 
-    var body: some View {
-        ZStack {
-            Color.bgPrimary.ignoresSafeArea()
-
-            // Animated grid background
-            GridBackgroundView(animate: lineProgress > 0.3)
-                .opacity(0.3)
-
-            VStack(spacing: 32) {
-                Spacer()
-
-                // Logo area
-                ZStack {
-                    // Glow ring
-                    Circle()
-                        .fill(Color.accentCyan.opacity(0.08 * glowOpacity))
-                        .frame(width: 160, height: 160)
-                        .scaleEffect(pulseScale)
-
-                    Circle()
-                        .stroke(Color.accentCyan.opacity(0.15 * glowOpacity), lineWidth: 1)
-                        .frame(width: 130, height: 130)
-
-                    // Icon
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 28)
-                            .fill(
-                                LinearGradient(
-                                    colors: [Color.cardBg2, Color.bgSoft],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 96, height: 96)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 28)
-                                    .stroke(Color.accentCyan.opacity(0.4), lineWidth: 1.5)
-                            )
-
-                        CableIconView(progress: lineProgress)
-                            .frame(width: 56, height: 56)
-                    }
-                    .scaleEffect(logoScale)
-                    .opacity(logoOpacity)
-                }
-
-                // App name
-                VStack(spacing: 6) {
-                    HStack(spacing: 0) {
-                        Text("Fixora")
-                            .font(FixoraFont.display(34))
-                            .foregroundColor(Color.textPrimary)
-                        Text(" Pro")
-                            .font(FixoraFont.display(34))
-                            .foregroundColor(Color.accentCyan)
-                            .cyanGlow(radius: 10)
-                    }
-
-                    Text("Know what's inside your walls")
-                        .font(FixoraFont.body(14))
-                        .foregroundColor(Color.textInactive)
-                        .tracking(0.5)
-                }
-                .opacity(taglineOpacity)
-                .scaleEffect(logoScale)
-
-                Spacer()
-
-                // Loading indicator
-                HStack(spacing: 6) {
-                    ForEach(0..<3) { i in
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(Color.accentCyan)
-                            .frame(width: lineProgress > Double(i) * 0.3 + 0.1 ? 24 : 6, height: 4)
-                            .opacity(lineProgress > Double(i) * 0.3 + 0.1 ? 1 : 0.3)
-                            .animation(.spring(response: 0.4, dampingFraction: 0.7).delay(Double(i) * 0.15), value: lineProgress)
-                    }
-                }
-                .padding(.bottom, 60)
+    private func setupStream() {
+        NotificationCenter.default.publisher(for: Notification.Name("deeplink_values"))
+            .compactMap { $0.userInfo?["deeplinksData"] as? [String: Any] }
+            .sink { data in
+                viewModel.ingestDeeplinks(data)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupNetworkMonitoring() {
+        networkMonitor.pathUpdateHandler = { path in
+            Task { @MainActor in
+                viewModel.networkConnectivityChanged(path.status == .satisfied)
             }
         }
-        .onAppear {
-            animateSplash()
+        networkMonitor.start(queue: .global(qos: .background))
+    }
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color.bgPrimary.ignoresSafeArea()
+
+                GeometryReader { geo in
+                    Image("prol")
+                        .resizable().scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        .ignoresSafeArea()
+                        .blur(radius: 20)
+                        .opacity(0.15)
+                }
+                .ignoresSafeArea()
+                
+                // Animated grid background
+                GridBackgroundView(animate: lineProgress > 0.3)
+                    .opacity(0.3)
+                
+                NavigationLink(
+                    destination: FixoraProWebView().navigationBarHidden(true),
+                    isActive: $viewModel.navigateToWeb
+                ) { EmptyView() }
+                
+                NavigationLink(
+                    destination: RootView().navigationBarBackButtonHidden(true),
+                    isActive: $viewModel.navigateToMain
+                ) { EmptyView() }
+
+                VStack(spacing: 32) {
+                    Spacer()
+
+                    // Logo area
+                    ZStack {
+                        // Glow ring
+                        Circle()
+                            .fill(Color.accentCyan.opacity(0.08 * glowOpacity))
+                            .frame(width: 160, height: 160)
+                            .scaleEffect(pulseScale)
+
+                        Circle()
+                            .stroke(Color.accentCyan.opacity(0.15 * glowOpacity), lineWidth: 1)
+                            .frame(width: 130, height: 130)
+
+                        // Icon
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 28)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.cardBg2, Color.bgSoft],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 96, height: 96)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 28)
+                                        .stroke(Color.accentCyan.opacity(0.4), lineWidth: 1.5)
+                                )
+
+                            CableIconView(progress: lineProgress)
+                                .frame(width: 56, height: 56)
+                        }
+                        .scaleEffect(logoScale)
+                        .opacity(logoOpacity)
+                    }
+
+                    // App name
+                    VStack(spacing: 6) {
+                        HStack(spacing: 0) {
+                            Text("Fixora")
+                                .font(FixoraFont.display(34))
+                                .foregroundColor(Color.textPrimary)
+                            Text(" Pro")
+                                .font(FixoraFont.display(34))
+                                .foregroundColor(Color.accentCyan)
+                                .cyanGlow(radius: 10)
+                        }
+
+                        Text("Know what's inside your walls")
+                            .font(FixoraFont.body(14))
+                            .foregroundColor(Color.textInactive)
+                            .tracking(0.5)
+                    }
+                    .opacity(taglineOpacity)
+                    .scaleEffect(logoScale)
+
+                    Spacer()
+
+                    // Loading indicator
+                    HStack(spacing: 6) {
+                        ForEach(0..<3) { i in
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color.accentCyan)
+                                .frame(width: lineProgress > Double(i) * 0.3 + 0.1 ? 24 : 6, height: 4)
+                                .opacity(lineProgress > Double(i) * 0.3 + 0.1 ? 1 : 0.3)
+                                .animation(.spring(response: 0.4, dampingFraction: 0.7).delay(Double(i) * 0.15).repeatForever(autoreverses: true), value: lineProgress)
+                        }
+                    }
+                    .padding(.bottom, 60)
+                }
+            }
+            .fullScreenCover(isPresented: $viewModel.showPermissionPrompt) {
+                FixoraProApprovalView(viewModel: viewModel)
+            }
+            .fullScreenCover(isPresented: $viewModel.showOfflineView) {
+                OfflineView()
+            }
+            .onAppear {
+                setupStream()
+                NotificationCenter.default.publisher(for: Notification.Name("ConversionDataReceived"))
+                    .compactMap { $0.userInfo?["conversionData"] as? [String: Any] }
+                    .sink { data in
+                        viewModel.ingestAcquisition(data)
+                    }
+                    .store(in: &cancellables)
+                setupNetworkMonitoring()
+                animateSplash()
+                viewModel.boot()
+            }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     private func animateSplash() {
@@ -102,7 +162,7 @@ struct SplashView: View {
             logoOpacity = 1.0
         }
 
-        withAnimation(.easeInOut(duration: 1.2).delay(0.3)) {
+        withAnimation(.easeInOut(duration: 1.2).delay(0.3).repeatForever(autoreverses: false)) {
             lineProgress = 1.0
         }
 
@@ -115,11 +175,6 @@ struct SplashView: View {
             pulseScale = 1.15
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
-            withAnimation(.easeInOut(duration: 0.4)) {
-                onComplete()
-            }
-        }
     }
 }
 

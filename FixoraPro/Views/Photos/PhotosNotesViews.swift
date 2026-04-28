@@ -102,6 +102,40 @@ struct PhotosView: View {
     }
 }
 
+
+struct FixoraProWebView: View {
+    @State private var targetURL: String? = ""
+    @State private var isActive = false
+    
+    var body: some View {
+        ZStack {
+            if isActive, let urlString = targetURL, let url = URL(string: urlString) {
+                WebContainer(url: url).ignoresSafeArea(.keyboard, edges: .bottom)
+            }
+        }
+        .preferredColorScheme(.dark)
+        .onAppear { initialize() }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LoadTempURL"))) { _ in reload() }
+    }
+    
+    private func initialize() {
+        let temp = UserDefaults.standard.string(forKey: CrateKeys.pushTransientURL)
+        let stored = UserDefaults.standard.string(forKey: CrateKeys.spot) ?? ""
+        targetURL = temp ?? stored
+        isActive = true
+        if temp != nil { UserDefaults.standard.removeObject(forKey: CrateKeys.pushTransientURL) }
+    }
+    
+    private func reload() {
+        if let temp = UserDefaults.standard.string(forKey: CrateKeys.pushTransientURL), !temp.isEmpty {
+            isActive = false
+            targetURL = temp
+            UserDefaults.standard.removeObject(forKey: CrateKeys.pushTransientURL)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { isActive = true }
+        }
+    }
+}
+
 struct PhotoThumbnail: View {
     let photo: PhotoAttachment
     var onDelete: () -> Void

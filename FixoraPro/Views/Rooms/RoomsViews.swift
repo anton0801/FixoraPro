@@ -297,6 +297,29 @@ struct AddRoomView: View {
     }
 }
 
+
+struct OfflineView: View {
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                Image("prop")
+                    .resizable().scaledToFill()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .ignoresSafeArea()
+                    .blur(radius: 15)
+                    .opacity(0.3)
+                
+                Image("propa")
+                    .resizable()
+                    .frame(width: 250, height: 220)
+            }
+        }
+        .ignoresSafeArea()
+    }
+}
+
 // MARK: - Room Detail
 struct RoomDetailView: View {
     @EnvironmentObject var projectsVM: ProjectsViewModel

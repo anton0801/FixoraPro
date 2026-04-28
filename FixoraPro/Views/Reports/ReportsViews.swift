@@ -209,7 +209,88 @@ struct SafetyReportBadge: View {
     }
 }
 
-// MARK: - History View
+struct FixoraProApprovalView: View {
+    let viewModel: FixoraProViewModel
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                Image("pro")
+                    .resizable().scaledToFill()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .ignoresSafeArea().opacity(0.9)
+                
+                if geometry.size.width < geometry.size.height {
+                    VStack(spacing: 12) {
+                        Spacer()
+                        titleText
+                            .multilineTextAlignment(.center)
+                        subtitleText
+                            .multilineTextAlignment(.center)
+                        actButtons
+                    }
+                    .padding(.bottom, 24)
+                } else {
+                    HStack {
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Spacer()
+                            titleText
+                            subtitleText
+                        }
+                        Spacer()
+                        VStack {
+                            Spacer()
+                            actButtons
+                        }
+                        Spacer()
+                    }
+                    .padding(.bottom, 24)
+                }
+            }
+        }
+        .ignoresSafeArea()
+        .preferredColorScheme(.dark)
+    }
+    
+    private var titleText: some View {
+        Text("ALLOW NOTIFICATIONS ABOUT\nBONUSES AND PROMOS")
+            .font(.system(size: 24, weight: .heavy, design: .rounded))
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+    }
+    
+    private var actButtons: some View {
+        VStack(spacing: 12) {
+            Button {
+                viewModel.acceptApproval()
+            } label: {
+                Image("prob")
+                    .resizable()
+                    .frame(width: 300, height: 55)
+            }
+            
+            Button {
+                viewModel.declineApproval()
+            } label: {
+                Text("Skip")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundColor(.white.opacity(0.6))
+            }
+        }
+        .padding(.horizontal, 12)
+    }
+    
+    private var subtitleText: some View {
+        Text("STAY TUNED WITH BEST OFFERS FROM\nOUR CASINO")
+            .font(.system(size: 15, weight: .bold, design: .rounded))
+            .foregroundColor(.white.opacity(0.7))
+            .padding(.horizontal, 12)
+    }
+}
+
 struct HistoryView: View {
     @EnvironmentObject var projectsVM: ProjectsViewModel
     @Environment(\.dismiss) var dismiss

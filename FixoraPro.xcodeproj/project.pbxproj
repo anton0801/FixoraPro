@@ -8,11 +8,44 @@
 
 /* Begin PBXBuildFile section */
 		8F56789D2F9B9BB100E0B023 /* codemagic.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 8F56789C2F9B9BAB00E0B023 /* codemagic.yaml */; };
+		8FEC43EC2FA0E06B006C0848 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43EB2FA0E06B006C0848 /* AppsFlyerLib */; };
+		8FEC43EF2FA0E071006C0848 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43EE2FA0E071006C0848 /* ConfettiSwiftUI */; };
+		8FEC43F22FA0E090006C0848 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43F12FA0E090006C0848 /* FirebaseCore */; };
+		8FEC43F42FA0E090006C0848 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43F32FA0E090006C0848 /* FirebaseMessaging */; };
+		8FEC43F72FA0E105006C0848 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43F62FA0E105006C0848 /* PostgREST */; };
+		8FEC43F92FA0E105006C0848 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC43F82FA0E105006C0848 /* Supabase */; };
+		8FEC44052FA0E13E006C0848 /* NotificationsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8FEC43FE2FA0E13E006C0848 /* NotificationsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8FEC440D2FA0E14A006C0848 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEC440C2FA0E14A006C0848 /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8FEC44032FA0E13E006C0848 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FB264AE2F962AA1009D28F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8FEC43FD2FA0E13E006C0848;
+			remoteInfo = NotificationsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8FEC440A2FA0E13E006C0848 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8FEC44052FA0E13E006C0848 /* NotificationsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8F56789C2F9B9BAB00E0B023 /* codemagic.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = codemagic.yaml; sourceTree = "<group>"; };
 		8FB264B62F962AA1009D28F5 /* FixoraPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FixoraPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FEC43FE2FA0E13E006C0848 /* NotificationsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -22,6 +55,13 @@
 				Info.plist,
 			);
 			target = 8FB264B52F962AA1009D28F5 /* FixoraPro */;
+		};
+		8FEC44092FA0E13E006C0848 /* Exceptions for "NotificationsExtension" folder in "NotificationsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8FEC43FD2FA0E13E006C0848 /* NotificationsExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -34,6 +74,14 @@
 			path = FixoraPro;
 			sourceTree = "<group>";
 		};
+		8FEC43FF2FA0E13E006C0848 /* NotificationsExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8FEC44092FA0E13E006C0848 /* Exceptions for "NotificationsExtension" folder in "NotificationsExtension" target */,
+			);
+			path = NotificationsExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +89,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FEC43F42FA0E090006C0848 /* FirebaseMessaging in Frameworks */,
+				8FEC43EF2FA0E071006C0848 /* ConfettiSwiftUI in Frameworks */,
+				8FEC43F92FA0E105006C0848 /* Supabase in Frameworks */,
+				8FEC43F22FA0E090006C0848 /* FirebaseCore in Frameworks */,
+				8FEC43EC2FA0E06B006C0848 /* AppsFlyerLib in Frameworks */,
+				8FEC43F72FA0E105006C0848 /* PostgREST in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FEC43FB2FA0E13E006C0848 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FEC440D2FA0E14A006C0848 /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +114,8 @@
 			children = (
 				8F56789C2F9B9BAB00E0B023 /* codemagic.yaml */,
 				8FB264B82F962AA1009D28F5 /* FixoraPro */,
+				8FEC43FF2FA0E13E006C0848 /* NotificationsExtension */,
+				8FEC440B2FA0E14A006C0848 /* Frameworks */,
 				8FB264B72F962AA1009D28F5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,8 +124,16 @@
 			isa = PBXGroup;
 			children = (
 				8FB264B62F962AA1009D28F5 /* FixoraPro.app */,
+				8FEC43FE2FA0E13E006C0848 /* NotificationsExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8FEC440B2FA0E14A006C0848 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,20 +146,51 @@
 				8FB264B22F962AA1009D28F5 /* Sources */,
 				8FB264B32F962AA1009D28F5 /* Frameworks */,
 				8FB264B42F962AA1009D28F5 /* Resources */,
+				8FEC440A2FA0E13E006C0848 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8FEC44042FA0E13E006C0848 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8FB264B82F962AA1009D28F5 /* FixoraPro */,
 			);
 			name = FixoraPro;
 			packageProductDependencies = (
+				8FEC43EB2FA0E06B006C0848 /* AppsFlyerLib */,
+				8FEC43EE2FA0E071006C0848 /* ConfettiSwiftUI */,
+				8FEC43F12FA0E090006C0848 /* FirebaseCore */,
+				8FEC43F32FA0E090006C0848 /* FirebaseMessaging */,
+				8FEC43F62FA0E105006C0848 /* PostgREST */,
+				8FEC43F82FA0E105006C0848 /* Supabase */,
 			);
 			productName = FixoraPro;
 			productReference = 8FB264B62F962AA1009D28F5 /* FixoraPro.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8FEC43FD2FA0E13E006C0848 /* NotificationsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FEC44062FA0E13E006C0848 /* Build configuration list for PBXNativeTarget "NotificationsExtension" */;
+			buildPhases = (
+				8FEC43FA2FA0E13E006C0848 /* Sources */,
+				8FEC43FB2FA0E13E006C0848 /* Frameworks */,
+				8FEC43FC2FA0E13E006C0848 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8FEC43FF2FA0E13E006C0848 /* NotificationsExtension */,
+			);
+			name = NotificationsExtension;
+			packageProductDependencies = (
+				8FEC440C2FA0E14A006C0848 /* FirebaseMessaging */,
+			);
+			productName = NotificationsExtension;
+			productReference = 8FEC43FE2FA0E13E006C0848 /* NotificationsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -102,6 +205,9 @@
 					8FB264B52F962AA1009D28F5 = {
 						CreatedOnToolsVersion = 16.4;
 					};
+					8FEC43FD2FA0E13E006C0848 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 				};
 			};
 			buildConfigurationList = 8FB264B12F962AA1009D28F5 /* Build configuration list for PBXProject "FixoraPro" */;
@@ -113,12 +219,19 @@
 			);
 			mainGroup = 8FB264AD2F962AA1009D28F5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8FEC43EA2FA0E06B006C0848 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+				8FEC43ED2FA0E071006C0848 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				8FEC43F02FA0E090006C0848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8FEC43F52FA0E105006C0848 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8FB264B72F962AA1009D28F5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8FB264B52F962AA1009D28F5 /* FixoraPro */,
+				8FEC43FD2FA0E13E006C0848 /* NotificationsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -132,6 +245,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FEC43FC2FA0E13E006C0848 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -142,7 +262,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FEC43FA2FA0E13E006C0848 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8FEC44042FA0E13E006C0848 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8FEC43FD2FA0E13E006C0848 /* NotificationsExtension */;
+			targetProxy = 8FEC44032FA0E13E006C0848 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8FB264C02F962AA3009D28F5 /* Debug */ = {
@@ -272,6 +407,7 @@
 				INFOPLIST_FILE = FixoraPro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fixora Pro";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use your camera in application.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Fixora Pro may momentarily reference anonymized system context to verify tool operations, detect irregular behavior, and maintain a reliable workspace. This context is processed in a privacy-first manner, used solely to keep the app functioning as intended, and is never retained to identify users, link activity across apps, or support advertising or external data sharing.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -286,7 +422,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.00;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fixxpro.FixoraPro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -313,6 +449,7 @@
 				INFOPLIST_FILE = FixoraPro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fixora Pro";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use your camera in application.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Fixora Pro may momentarily reference anonymized system context to verify tool operations, detect irregular behavior, and maintain a reliable workspace. This context is processed in a privacy-first manner, used solely to keep the app functioning as intended, and is never retained to identify users, link activity across apps, or support advertising or external data sharing.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -327,7 +464,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.00;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fixxpro.FixoraPro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -338,6 +475,67 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+		8FEC44072FA0E13E006C0848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationsExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationsExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fixxpro.FixoraPro.NotificationsExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8FEC44082FA0E13E006C0848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationsExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationsExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fixxpro.FixoraPro.NotificationsExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -362,7 +560,89 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8FEC44062FA0E13E006C0848 /* Build configuration list for PBXNativeTarget "NotificationsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FEC44072FA0E13E006C0848 /* Debug */,
+				8FEC44082FA0E13E006C0848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8FEC43EA2FA0E06B006C0848 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.18.0;
+			};
+		};
+		8FEC43ED2FA0E071006C0848 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		8FEC43F02FA0E090006C0848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.1;
+			};
+		};
+		8FEC43F52FA0E105006C0848 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8FEC43EB2FA0E06B006C0848 /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43EA2FA0E06B006C0848 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+		8FEC43EE2FA0E071006C0848 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43ED2FA0E071006C0848 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
+		8FEC43F12FA0E090006C0848 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43F02FA0E090006C0848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		8FEC43F32FA0E090006C0848 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43F02FA0E090006C0848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		8FEC43F62FA0E105006C0848 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43F52FA0E105006C0848 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		8FEC43F82FA0E105006C0848 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43F52FA0E105006C0848 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		8FEC440C2FA0E14A006C0848 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEC43F02FA0E090006C0848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8FB264AE2F962AA1009D28F5 /* Project object */;
 }

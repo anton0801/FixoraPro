@@ -83,6 +83,136 @@ enum CableType: String, Codable, CaseIterable {
     }
 }
 
+struct AcquisitionData {
+    var dimensions: [String: String]
+    var trails: [String: String]
+    
+    static let empty = AcquisitionData(dimensions: [:], trails: [:])
+    
+    func nonEmpty() -> Bool { !dimensions.isEmpty }
+    func organicSource() -> Bool { dimensions["af_status"] == "Organic" }
+}
+
+struct DeliveryData {
+    var spot: String?
+    var label: String?
+    var initial: Bool
+    var concluded: Bool
+    
+    static let empty = DeliveryData(spot: nil, label: nil, initial: true, concluded: false)
+}
+
+// MARK: - Tagged Errors (associated values)
+
+enum FixoraError: Error {
+    case acquisitionMissing(reason: String)
+    case validationRebuffed(detail: String?)
+    case endpointBanned(code: Int?)  // 404 или ok:false
+    case packetMalformed(field: String?)
+    case wireBroken(underlying: Error?)
+    case throttle(retryAfter: TimeInterval?)
+    case windowClosed  // timeout
+    
+    var shouldRetry: Bool {
+        switch self {
+        case .endpointBanned, .acquisitionMissing, .validationRebuffed:
+            return false
+        case .throttle, .wireBroken, .packetMalformed, .windowClosed:
+            return true
+        }
+    }
+}
+
+// MARK: - Saga Step Result
+
+enum SagaStepOutcome {
+    case proceed
+    case shortCircuit(CoordinatorRoute)
+    case abort(FixoraError)
+}
+
+// MARK: - Constants
+
+struct FixoraConstants {
+    static let groupSuite = "group.fixorapro.toolkit"
+    static let trackerKey = "kwzvDCxifaGjpraW4t6Ben"
+    static let logBadge = "🛠️ [FixoraPro]"
+    static let cookieCrate = "fixorapro_crate"
+    static let appNumeric = "6763554843"
+    static let backendOrigin = "https://fiixorapro.com/config.php"
+    
+    static let currentSchemaVersion = 2
+}
+
+// MARK: - Storage Keys (текущая версия v2)
+
+struct CrateKeys {
+    // v2 keys (current)
+    static let schemaVersion = "fxp_schema_v"
+    static let dimensions = "fxp_dim"
+    static let trails = "fxp_trail"
+    static let spot = "fxp_spot"
+    static let label = "fxp_label"
+    static let started = "fxp_started"
+    static let approvalYes = "fxp_apr_yes"
+    static let approvalNo = "fxp_apr_no"
+    static let approvalAt = "fxp_apr_at"
+    
+    // v1 legacy keys (для миграции)
+    struct Legacy {
+        static let dimensions = "fxp_v1_data"
+        static let trails = "fxp_v1_links"
+        static let spot = "fxp_v1_dest"
+    }
+    
+    // Standard keys (не version-specific)
+    static let pushTransientURL = "temp_url"
+    static let fcmToken = "fcm_token"
+    static let pushToken = "push_token"
+}
+
+struct ApprovalData {
+    var allowed: Bool
+    var blocked: Bool
+    var prompted: Date?
+    
+    static let empty = ApprovalData(allowed: false, blocked: false, prompted: nil)
+    
+    func eligibleNow() -> Bool {
+        guard !allowed && !blocked else { return false }
+        
+        if let date = prompted {
+            let interval = Date().timeIntervalSince(date) / 86400
+            return interval >= 3
+        }
+        return true
+    }
+}
+
+// MARK: - Snapshot for restore
+
+struct VersionedBundle {
+    let version: Int
+    let dimensions: [String: String]
+    let trails: [String: String]
+    let spot: String?
+    let label: String?
+    let initial: Bool
+    let allowed: Bool
+    let blocked: Bool
+    let prompted: Date?
+}
+
+// MARK: - Coordinator Routes (вместо outcome/signal/event)
+
+enum CoordinatorRoute {
+    case stayOnSplash
+    case showApproval
+    case openWeb(String)
+    case openMain
+    case showOffline
+}
+
 // MARK: - CablePoint (socket/outlet)
 struct CablePoint: Identifiable, Codable {
     var id: UUID = UUID()
